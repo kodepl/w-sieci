@@ -6,24 +6,32 @@ import { byNewest, formatWhen, isoDay } from "../../lib/pasmo";
 const posts = byNewest(await getCollection("pasmo"));
 ---
 
-<Pasmo title="Pasmo" description="Pełny indeks tekstów W Sieci. Numerowane pasmo, od najnowszego.">
-  <div class="ws-page">
-    <h1>Pasmo</h1>
-    <p>Każdy tekst ma numer. Nie jest to ranking. To kolejność w paśmie.</p>
+<Pasmo
+  title="Archiwum pasma"
+  description="Pełne archiwum tekstów portalu W Sieci. Od najnowszego wydania."
+  activeCat="Wszystkie"
+>
+  <div class="ws-page" style="max-width:none;margin-bottom:1.25rem">
+    <h1>Archiwum</h1>
+    <p style="max-width:40rem;color:var(--ws-mute)">
+      Wszystkie materiały z pasma, od najnowszego. Kliknij tytuł albo miniaturę, żeby otworzyć
+      tekst.
+    </p>
   </div>
-  <ol class="ws-band" style="margin-top:1.5rem">
+
+  <div class="ws-index">
     {
       posts.map((post) => (
-        <li>
-          <a href={`/pasmo/${post.slug}/`}>
-            <span class="ws-num">{post.data.numer}</span>
-            <span class="ws-band-name">{post.data.title}</span>
-            <time class="ws-when" datetime={isoDay(post.data.pubDate)}>
-              {formatWhen(post.data.pubDate)}
-            </time>
-          </a>
-        </li>
+        <a href={`/pasmo/${post.slug}/`}>
+          <img src={post.data.image} alt="" width="288" height="192" loading="lazy" />
+          <div>
+            <span class="ws-badge">{post.data.category}</span>
+            <h2>{post.data.title}</h2>
+            <p class="ws-meta-line">{post.data.description}</p>
+          </div>
+          <time datetime={isoDay(post.data.pubDate)}>{formatWhen(post.data.pubDate)}</time>
+        </a>
       ))
     }
-  </ol>
+  </div>
 </Pasmo>

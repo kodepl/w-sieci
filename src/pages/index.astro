@@ -5,39 +5,130 @@ import { byNewest, formatWhen, isoDay } from "../lib/pasmo";
 
 const posts = byNewest(await getCollection("pasmo"));
 const lead = posts[0];
-const rest = posts.slice(1);
+const stack = posts.slice(1, 3);
+const cards = posts.slice(3, 9);
+const strip = posts.slice(9);
+const latest = posts.slice(0, 8);
 ---
 
 <Pasmo
   title="W Sieci"
-  description="Portal o byciu online. Pasmo tekstów o nawykach, narzędziach i szumie, który wchodzi w dzień."
+  description="Portal o byciu online. Aktualności i teksty o nawykach, narzędziach i szumie, który wchodzi w dzień."
   ogImage={lead?.data.image}
+  activeCat="Wszystkie"
 >
   {
     lead && (
-      <section class="ws-lead" aria-labelledby="ws-lead-title">
-        <p class="ws-kicker">Pasmo {lead.data.numer} · lead</p>
-        <h1 id="ws-lead-title">{lead.data.title}</h1>
-        <p>{lead.data.description}</p>
-        <a href={`/pasmo/${lead.slug}/`}>Czytaj lead</a>
+      <section class="ws-desk" aria-label="Wydanie główne">
+        <article class="ws-lead">
+          <a class="ws-lead-media" href={`/pasmo/${lead.slug}/`}>
+            <img
+              src={lead.data.image}
+              alt=""
+              width="1200"
+              height="750"
+              loading="eager"
+            />
+          </a>
+          <div>
+            <span class="ws-badge">{lead.data.category}</span>
+            <h2>
+              <a href={`/pasmo/${lead.slug}/`}>{lead.data.title}</a>
+            </h2>
+            <p>{lead.data.description}</p>
+            <p class="ws-meta-line">
+              <time datetime={isoDay(lead.data.pubDate)}>{formatWhen(lead.data.pubDate)}</time>
+              {" · "}
+              {lead.data.author}
+              {" · "}
+              {lead.data.readingTime}
+            </p>
+          </div>
+        </article>
+
+        <div class="ws-stack" aria-label="Wyróżnione">
+          {stack.map((post) => (
+            <a class="ws-stack-item" href={`/pasmo/${post.slug}/`}>
+              <img src={post.data.image} alt="" width="220" height="164" loading="lazy" />
+              <div>
+                <span class="ws-badge">{post.data.category}</span>
+                <h3>{post.data.title}</h3>
+                <p class="ws-meta-line">
+                  <time datetime={isoDay(post.data.pubDate)}>{formatWhen(post.data.pubDate)}</time>
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <aside class="ws-aside" aria-label="Najnowsze">
+          <h2>Najnowsze</h2>
+          <ol class="ws-latest">
+            {latest.map((post) => (
+              <li>
+                <a href={`/pasmo/${post.slug}/`}>
+                  <span>
+                    <strong>{post.data.title}</strong>
+                    <span>
+                      {post.data.category} · {formatWhen(post.data.pubDate)}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </aside>
       </section>
     )
   }
 
-  <h2 class="ws-band-title">Indeks pasma</h2>
-  <ol class="ws-band">
-    {
-      rest.map((post) => (
-        <li>
-          <a href={`/pasmo/${post.slug}/`}>
-            <span class="ws-num">{post.data.numer}</span>
-            <span class="ws-band-name">{post.data.title}</span>
-            <time class="ws-when" datetime={isoDay(post.data.pubDate)}>
-              {formatWhen(post.data.pubDate)}
-            </time>
-          </a>
-        </li>
-      ))
-    }
-  </ol>
+  {
+    cards.length > 0 && (
+      <section class="ws-block" aria-labelledby="ws-more-title">
+        <div class="ws-block-head">
+          <h2 id="ws-more-title">Więcej z pasma</h2>
+          <a href="/pasmo/">Całe archiwum</a>
+        </div>
+        <div class="ws-cards">
+          {cards.map((post) => (
+            <a class="ws-card" href={`/pasmo/${post.slug}/`}>
+              <img src={post.data.image} alt="" width="640" height="400" loading="lazy" />
+              <span class="ws-badge">{post.data.category}</span>
+              <h3>{post.data.title}</h3>
+              <p>{post.data.description}</p>
+              <p class="ws-meta-line">
+                <time datetime={isoDay(post.data.pubDate)}>{formatWhen(post.data.pubDate)}</time>
+                {" · "}
+                {post.data.readingTime}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    strip.length > 0 && (
+      <section class="ws-block" aria-labelledby="ws-strip-title">
+        <div class="ws-block-head">
+          <h2 id="ws-strip-title">Z redakcji</h2>
+        </div>
+        <div class="ws-strip">
+          {strip.map((post) => (
+            <a href={`/pasmo/${post.slug}/`}>
+              <img src={post.data.image} alt="" width="300" height="200" loading="lazy" />
+              <div>
+                <span class="ws-badge">{post.data.category}</span>
+                <h3>{post.data.title}</h3>
+                <p class="ws-meta-line">
+                  <time datetime={isoDay(post.data.pubDate)}>{formatWhen(post.data.pubDate)}</time>
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
 </Pasmo>

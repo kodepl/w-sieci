@@ -1,7 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import Pasmo from "../../layouts/Pasmo.astro";
-import { formatWhen, isoDay } from "../../lib/pasmo";
+import { byNewest, formatWhen, isoDay } from "../../lib/pasmo";
 
 export async function getStaticPaths() {
   const posts = await getCollection("pasmo");
@@ -17,6 +17,9 @@ interface Props {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+const related = byNewest(await getCollection("pasmo"))
+  .filter((p) => p.slug !== post.slug)
+  .slice(0, 5);
 ---
 
 <Pasmo
@@ -25,18 +28,49 @@ const { Content } = await post.render();
   ogImage={post.data.image}
   type="article"
   published={post.data.pubDate}
+  activeCat={post.data.category}
 >
-  <article class="ws-prose">
-    <p class="ws-kicker">Pasmo {post.data.numer} · {post.data.category}</p>
-    <h1>{post.data.title}</h1>
-    <p class="ws-meta">
-      <time datetime={isoDay(post.data.pubDate)}>{formatWhen(post.data.pubDate)}</time>
-      · {post.data.author} · {post.data.readingTime}
-    </p>
-    <figure class="ws-article-hero">
-      <img src={post.data.image} alt="" width="1600" height="900" loading="eager" />
-      <figcaption>{post.data.imageCaption}</figcaption>
-    </figure>
-    <Content />
-  </article>
+  <p class="ws-crumb">
+    <a href="/">Start</a>
+    {" / "}
+    <a href="/pasmo/">Pasmo</a>
+    {" / "}
+    <span>{post.data.category}</span>
+  </p>
+
+  <div class="ws-article">
+    <article class="ws-prose">
+      <span class="ws-badge">{post.data.category}</span>
+      <h1>{post.data.title}</h1>
+      <p class="ws-deck">{post.data.description}</p>
+      <p class="ws-byline">
+        <time datetime={isoDay(post.data.pubDate)}>{formatWhen(post.data.pubDate)}</time>
+        {" · "}
+        {post.data.author}
+        {" · "}
+        {post.data.readingTime}
+      </p>
+      <figure class="ws-article-hero">
+        <img src={post.data.image} alt="" width="1600" height="900" loading="eager" />
+        <figcaption>{post.data.imageCaption}</figcaption>
+      </figure>
+      <Content />
+    </article>
+
+    <aside class="ws-related" aria-label="Czytaj też">
+      <h2>Czytaj też</h2>
+      <ul>
+        {
+          related.map((item) => (
+            <li>
+              <a href={`/pasmo/${item.slug}/`}>
+                <img src={item.data.image} alt="" width="180" height="136" loading="lazy" />
+                <strong>{item.data.title}</strong>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </aside>
+  </div>
 </Pasmo>

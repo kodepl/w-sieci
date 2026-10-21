@@ -4,7 +4,7 @@ const longDate = new Intl.DateTimeFormat("pl-PL", {
   day: "numeric",
   month: "long",
   year: "numeric",
-  timeZone: "UTC",
+  timeZone: "Europe/Warsaw",
 });
 
 export function formatWhen(date: Date): string {
