@@ -1,0 +1,42 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Pasmo from "../../layouts/Pasmo.astro";
+import { formatWhen, isoDay } from "../../lib/pasmo";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("pasmo");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<"pasmo">;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Pasmo
+  title={post.data.title}
+  description={post.data.description}
+  ogImage={post.data.image}
+  type="article"
+  published={post.data.pubDate}
+>
+  <article class="ws-prose">
+    <p class="ws-kicker">Pasmo {post.data.numer} · {post.data.category}</p>
+    <h1>{post.data.title}</h1>
+    <p class="ws-meta">
+      <time datetime={isoDay(post.data.pubDate)}>{formatWhen(post.data.pubDate)}</time>
+      · {post.data.author} · {post.data.readingTime}
+    </p>
+    <figure class="ws-article-hero">
+      <img src={post.data.image} alt="" width="1600" height="900" loading="eager" />
+      <figcaption>{post.data.imageCaption}</figcaption>
+    </figure>
+    <Content />
+  </article>
+</Pasmo>

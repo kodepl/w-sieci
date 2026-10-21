@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import Pasmo from "../../layouts/Pasmo.astro";
+import { byNewest, formatWhen, isoDay } from "../../lib/pasmo";
+
+const posts = byNewest(await getCollection("pasmo"));
+---
+
+<Pasmo title="Pasmo" description="Pełny indeks tekstów W Sieci. Numerowane pasmo, od najnowszego.">
+  <div class="ws-page">
+    <h1>Pasmo</h1>
+    <p>Każdy tekst ma numer. Nie jest to ranking. To kolejność w paśmie.</p>
+  </div>
+  <ol class="ws-band" style="margin-top:1.5rem">
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/pasmo/${post.slug}/`}>
+            <span class="ws-num">{post.data.numer}</span>
+            <span class="ws-band-name">{post.data.title}</span>
+            <time class="ws-when" datetime={isoDay(post.data.pubDate)}>
+              {formatWhen(post.data.pubDate)}
+            </time>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</Pasmo>

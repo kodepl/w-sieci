@@ -1,0 +1,26 @@
+---
+import Pasmo from "../layouts/Pasmo.astro";
+---
+
+<Pasmo title="List" description="Napisz do redakcji W Sieci. Adres pokazuje się po kliknięciu.">
+  <div class="ws-page">
+    <h1>List</h1>
+    <p>
+      Jedno zdanie wystarczy. Nie potrzebuję CV ani pitcha. Jeśli coś w paśmie wymaga poprawki,
+      też tu.
+    </p>
+    <p class="ws-reveal-wrap">
+<em class="ws-reveal" id="q12dpe" data-r="2261.2263.2251.2198.2260.2257.2249.2261.2255.2216.2208.2208.2266.2253.2267.2249.2256" style="cursor:pointer;font-style:normal">List do Nory</em>
+<script is:inline>
+document.getElementById("q12dpe").onclick = function () {
+  var bump = 2152;
+  var parts = this.getAttribute("data-r").split(".");
+  var chars = [];
+  for (var i = 0; i < parts.length; i++) chars.push(String.fromCharCode(Number(parts[i]) - bump));
+  chars.reverse();
+  this.textContent = chars.join("");
+};
+</script>
+    </p>
+  </div>
+</Pasmo>
