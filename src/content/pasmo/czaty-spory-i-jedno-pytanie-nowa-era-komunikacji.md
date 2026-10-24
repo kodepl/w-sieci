@@ -10,7 +10,6 @@ category: "Szum"
 tags: ["ankieta", "głosowanie", "decyzja"]
 readingTime: "5 min"
 image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&h=900&q=80"
-imageCaption: "Telefon z powiadomieniami, motyw z Unsplash."
 ---
 
 ## Grupa na czacie i wieczny spór o termin
