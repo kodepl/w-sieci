@@ -166,9 +166,15 @@ img {
 
 .ws-desk {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr) minmax(16rem, 0.85fr);
-  gap: 1.25rem 1.4rem;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 19rem);
+  gap: 1.25rem 1.5rem;
   align-items: start;
+}
+
+.ws-main {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
 }
 
 .ws-lead {
@@ -224,9 +230,61 @@ img {
 
 .ws-stack {
   display: grid;
-  gap: 1rem;
-  border-left: 1px solid var(--ws-line);
-  padding-left: 1.15rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--ws-line);
+}
+
+.ws-wire {
+  border-top: 2px solid var(--ws-ink);
+  padding-top: 0.85rem;
+}
+
+.ws-wire-title {
+  margin: 0 0 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ws-wire ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 2;
+  column-gap: 1.25rem;
+}
+
+.ws-wire li {
+  break-inside: avoid;
+  border-bottom: 1px solid var(--ws-line);
+}
+
+.ws-wire a {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.55rem 0;
+}
+
+.ws-wire-cat {
+  color: var(--ws-accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ws-wire-name {
+  font-family: var(--ws-font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ws-wire a:hover .ws-wire-name {
+  color: var(--ws-accent);
 }
 
 .ws-stack-item {
@@ -463,8 +521,51 @@ img {
   align-items: start;
 }
 
+.ws-article-main {
+  display: grid;
+  gap: 1.75rem;
+  min-width: 0;
+}
+
 .ws-prose {
   max-width: 42rem;
+}
+
+.ws-after {
+  max-width: 42rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--ws-ink);
+}
+
+.ws-after-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ws-after-card {
+  display: grid;
+  gap: 0.4rem;
+  align-content: start;
+}
+
+.ws-after-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: var(--ws-soft);
+}
+
+.ws-after-card h3 {
+  margin: 0;
+  font-family: var(--ws-font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ws-after-card:hover h3 {
+  color: var(--ws-accent);
 }
 
 .ws-prose h1 {
@@ -661,11 +762,11 @@ img {
 
 @media (max-width: 980px) {
   .ws-desk {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .ws-aside {
-    grid-column: 1 / -1;
+    order: 2;
   }
 
   .ws-cards {
@@ -695,10 +796,15 @@ img {
   }
 
   .ws-stack {
-    border-left: 0;
-    padding-left: 0;
-    border-top: 1px solid var(--ws-line);
-    padding-top: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  .ws-wire ul {
+    columns: 1;
+  }
+
+  .ws-after-grid {
+    grid-template-columns: 1fr;
   }
 
   .ws-cards,

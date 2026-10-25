@@ -17,9 +17,11 @@ interface Props {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
-const related = byNewest(await getCollection("pasmo"))
-  .filter((p) => p.slug !== post.slug)
-  .slice(0, 5);
+const all = byNewest(await getCollection("pasmo")).filter((p) => p.slug !== post.slug);
+const related = all.slice(0, 5);
+const more = all.slice(0, 4);
+const sameCat = all.filter((p) => p.data.category === post.data.category).slice(0, 4);
+const below = sameCat.length >= 2 ? sameCat : more;
 ---
 
 <Pasmo
@@ -39,23 +41,46 @@ const related = byNewest(await getCollection("pasmo"))
   </p>
 
   <div class="ws-article">
-    <article class="ws-prose">
-      <span class="ws-badge">{post.data.category}</span>
-      <h1>{post.data.title}</h1>
-      <p class="ws-deck">{post.data.description}</p>
-      <p class="ws-byline">
-        <time datetime={isoDay(post.data.pubDate)}>{formatWhen(post.data.pubDate)}</time>
-        {" · "}
-        {post.data.author}
-        {" · "}
-        {post.data.readingTime}
-      </p>
-      <figure class="ws-article-hero">
-        <img src={post.data.image} alt="" width="1600" height="900" loading="eager" />
-        <figcaption>{post.data.imageCaption}</figcaption>
-      </figure>
-      <Content />
-    </article>
+    <div class="ws-article-main">
+      <article class="ws-prose">
+        <span class="ws-badge">{post.data.category}</span>
+        <h1>{post.data.title}</h1>
+        <p class="ws-deck">{post.data.description}</p>
+        <p class="ws-byline">
+          <time datetime={isoDay(post.data.pubDate)}>{formatWhen(post.data.pubDate)}</time>
+          {" · "}
+          {post.data.author}
+          {" · "}
+          {post.data.readingTime}
+        </p>
+        <figure class="ws-article-hero">
+          <img src={post.data.image} alt="" width="1600" height="900" loading="eager" />
+          <figcaption>{post.data.imageCaption}</figcaption>
+        </figure>
+        <Content />
+      </article>
+
+      <section class="ws-after" aria-labelledby="ws-after-title">
+        <div class="ws-block-head">
+          <h2 id="ws-after-title">Więcej z pasma</h2>
+          <a href="/pasmo/">Archiwum</a>
+        </div>
+        <div class="ws-after-grid">
+          {
+            below.map((item) => (
+              <a class="ws-after-card" href={`/pasmo/${item.slug}/`}>
+                <img src={item.data.image} alt="" width="480" height="300" loading="lazy" />
+                <span class="ws-badge">{item.data.category}</span>
+                <h3>{item.data.title}</h3>
+                <p class="ws-meta-line">
+                  <time datetime={isoDay(item.data.pubDate)}>{formatWhen(item.data.pubDate)}</time>
+                </p>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+    </div>
 
     <aside class="ws-related" aria-label="Czytaj też">
       <h2>Czytaj też</h2>
@@ -77,7 +102,7 @@ const related = byNewest(await getCollection("pasmo"))
           src="https://ankiety.org/embed/YrQ_OqSuhQ?theme=transparent&font=sans&corners=soft&accent=%2322262f"
           title="Ankieta online"
           width="100%"
-          height="620"
+          height="420"
           style="border:0;max-width:640px"
           loading="lazy"></iframe>
       </div>
