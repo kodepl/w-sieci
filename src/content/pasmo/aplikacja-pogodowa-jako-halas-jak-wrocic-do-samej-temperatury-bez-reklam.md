@@ -10,7 +10,6 @@ category: "Szum"
 tags: ["pogoda", "aplikacja", "rano"]
 readingTime: "6 min"
 image: "https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=1400&h=900&q=80"
-imageCaption: "Telefon przy oknie, motyw z Unsplash."
 ---
 
 Przy wschodzie słońca, gdy budziki dzwonią, a kawa paruje w kubku, wyciągamy telefon z kieszeni. Chcemy sprawdzić, jaka będzie pogoda. Zwykle jednak musimy przefiltrować informacyjne szumy, które zdominowały aplikacje pogodowe. Warto w tym kontekście zwrócić uwagę na pogoda.city, aplikację, która oferuje prostotę bez reklam. Bez banerów, bez paywalla na temperaturę, bez zbędnych kont.
